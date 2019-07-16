@@ -75,7 +75,7 @@ function logout()
   });
 }
 
-function writeUserToDB(nameDB)
+function writeUserToDB(dbName)
 {
   var data = document.getElementById("data").value;
   var description = document.getElementById("description").value;
@@ -86,14 +86,12 @@ function writeUserToDB(nameDB)
     description: description 
   };
 
-  writeDB(nameDB, mylist);
+  writeDB(dbName, mylist);
 }
 
-
-
-function writeDB(nameCollection, mylist)
+function writeDB(collectionName, mylist)
 {
-  firestoreDB.collection(nameCollection).add(mylist)
+  firestoreDB.collection(collectionName).add(mylist)
   .then(function(docRef) 
   {
     console.log("Document written with ID: ", docRef.id);
@@ -104,14 +102,39 @@ function writeDB(nameCollection, mylist)
   });
 }
 
-function read()
+function readUserFromDB(collectionName)
 {
-  firestoreDB.collection("users").get().then((querySnapshot) =>
+  document.getElementById("showSection").innerHTML;
+  read(collectionName);
+
+}
+
+function read(collectionName)
+{
+  firestoreDB.collection(collectionName).get().then((querySnapshot) =>
   {
     querySnapshot.forEach((doc) => 
     {
-        console.log(`${doc.id} => ${doc.data()}`);
+      console.log(`${doc.id} => ${doc.data()}`);
+      var ValueFromDB = doc.data();
+
+      //used symbol ( ` ), its next to symbol ( ? )
+      document.getElementById("cardSection").innerHTML += 
+      `<div class="card mb-3">
+        <div class="card body">
+          <h5 class="card-text">
+           ${ValueFromDB.data}
+          </h5>
+          <p>
+           ${ValueFromDB.description}
+          </p>
+        </div>
+      </div>
+      `;
+      
+      //if(){}
     });
   });
 }
+
 
