@@ -42,7 +42,6 @@ function login()
   var userEmail = document.getElementById("email_input").value;
   var userPassword = document.getElementById("password_input").value;
   //window.alert(userEmail + " " + userPassword);
-  writeUserToDB("users");
 
   firebase.auth().signInWithEmailAndPassword(userEmail, userPassword).then(function()
   {
@@ -113,21 +112,26 @@ function read(collectionName)
 {
   firestoreDB.collection(collectionName).get().then((querySnapshot) =>
   {
+    document.getElementById("cardSection").innerHTML = ""; 
+
     querySnapshot.forEach((doc) => 
     {
       console.log(`${doc.id} => ${doc.data()}`);
-      var ValueFromDB = doc.data();
+      var ValueFromDB = doc.data(); 
 
       //used symbol ( ` ), its next to symbol ( ? )
       document.getElementById("cardSection").innerHTML += 
       `<div class="card mb-3">
         <div class="card body">
-          <h5 class="card-text">
-           ${ValueFromDB.data}
-          </h5>
-          <p>
-           ${ValueFromDB.description}
-          </p>
+          <h5 class="card-text">${ValueFromDB.data}</h5>
+          <p>${ValueFromDB.description}</p>
+
+          <button type="submit" style="color:green" class="btn btn-warninig"
+          onclick="update(${ValueFromDB.id})">Edit data</button>
+
+          <button type="submit" style="color:black" class="btn btn-danger"
+          onclick="delete(${ValueFromDB.id})">Delete</button>
+
         </div>
       </div>
       `;
