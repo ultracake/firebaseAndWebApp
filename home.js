@@ -90,7 +90,7 @@ function writeUserToDB(dbName)
 
 function writeDB(collectionName, mylist)
 {
-  firestoreDB.collection(collectionName).add(mylist)
+  firestoreDB.collection(collectionName).doc("test").set(mylist)
   .then(function(docRef) 
   {
     console.log("Document written with ID: ", docRef.id);
@@ -129,8 +129,8 @@ function read(collectionName)
           <button type="submit" style="color:green" class="btn btn-warninig"
           onclick="update(${ValueFromDB.id})">Edit data</button>
 
-          <button type="submit" style="color:black" class="btn btn-danger"
-          onclick="delete(${ValueFromDB.id})">Delete</button>
+          <button style="color:black" class="btn btn-danger"
+          onclick="deleteFromDB('users')">Delete</button>
 
         </div>
       </div>
@@ -139,6 +139,45 @@ function read(collectionName)
       //if(){}
     });
   });
+}
+
+function deleteFromDB(collectionName)
+{
+  firestoreDB.collection(collectionName).doc("test").delete().then(function() 
+  {
+    console.log("Document successfully deleted!");
+  }).catch(function(error)
+  {
+    console.error("Error removing document: ", error);
+  });
+
+  read(collectionName);
+}
+
+function reset()
+{
+  document.getElementById("cardSection").innerHTML +=
+  `<div class="col-md-6" id="section1">
+      <form class="border p-4 mb-4" id="form">
+          
+          <div class="form-group">
+              <label>Insert data</label>
+              <input type="text" class="form-control" id="data" placeholder="Enter data">
+          </div>
+
+          <div class="form-group">
+              <label>Description </label>
+              <input type="text" class="form-control" id="description" placeholder="Description">
+          </div>
+          <button style="display: none" id="but2" class="btn btn-success">Update task</button>
+          <button style="display: none" id="but3" class="btn btn-danger">Cancel</button>
+      </form>
+      <button onclick="writeUserToDB('users')">Add data</button>
+      <button onclick="read('users')">read data</button>
+      <div class="col-md-6" id="cardSection">
+  
+    </div>
+  `;
 }
 
 
