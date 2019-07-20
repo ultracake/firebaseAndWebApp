@@ -10,7 +10,7 @@
     <title>home</title>
 </head>
 
-<body>
+<body onload="read('users')">
 
     <nav class="navbar navbar-light bg-warning mb-4">
         <span class="navbar-brand mb-0 h1">Home Navbar</span>
@@ -38,13 +38,13 @@
                     <button style="display: none" id="but2" class="btn btn-success">Update task</button>
                     <button style="display: none" id="but3" class="btn btn-danger">Cancel</button>
                 </form>
-                <button onclick="writeUserToDB('users')">Add data</button>
+                <button type="submit" onclick="writeUserToDB('users')">Add data</button>
                 <button onclick="read('users')">read data</button>
-                <div class="col-md-6" id="cardSection">
-            
-                </div>
+                
             </div>
+            <div class="col-md-6" id="cardSection">
             
+            </div>
         </div>
     </div>
 

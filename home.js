@@ -86,6 +86,7 @@ function writeUserToDB(dbName)
   };
 
   writeDB(dbName, mylist);
+  reset();
 }
 
 function writeDB(collectionName, mylist)
@@ -127,7 +128,7 @@ function read(collectionName)
           <p>${ValueFromDB.description}</p>
 
           <button type="submit" style="color:green" class="btn btn-warninig"
-          onclick="update(${ValueFromDB.id})">Edit data</button>
+          onclick="myUpdate(${ValueFromDB.id}, ${ValueFromDB.data}, ${ValueFromDB.description})">Edit data</button>
 
           <button style="color:black" class="btn btn-danger"
           onclick="deleteFromDB('users')">Delete</button>
@@ -156,27 +157,49 @@ function deleteFromDB(collectionName)
 
 function reset()
 {
-  document.getElementById("cardSection").innerHTML +=
-  `<div class="col-md-6" id="section1">
-      <form class="border p-4 mb-4" id="form">
-          
-          <div class="form-group">
-              <label>Insert data</label>
-              <input type="text" class="form-control" id="data" placeholder="Enter data">
-          </div>
+  document.getElementById("section1").innerHTML =
+  `
+    <form class="border p-4 mb-4" id="form">
+      <div class="form-group">
+          <label>Insert data</label>
+          <input type="text" class="form-control" id="data" placeholder="Enter data">
+      </div>
 
-          <div class="form-group">
-              <label>Description </label>
-              <input type="text" class="form-control" id="description" placeholder="Description">
-          </div>
-          <button style="display: none" id="but2" class="btn btn-success">Update task</button>
-          <button style="display: none" id="but3" class="btn btn-danger">Cancel</button>
-      </form>
-      <button onclick="writeUserToDB('users')">Add data</button>
-      <button onclick="read('users')">read data</button>
-      <div class="col-md-6" id="cardSection">
-  
-    </div>
+      <div class="form-group">
+          <label>Description </label>
+          <input type="text" class="form-control" id="description" placeholder="Description">
+      </div>
+      <button style="display: none" id="but2" class="btn btn-success">Update task</button>
+      <button style="display: none" id="but3" class="btn btn-danger">Cancel</button>
+    </form>
+
+    <button onclick="writeUserToDB('users')">Add data</button>
+    <button onclick="read('users')">read data</button>
+  `;
+}
+
+function myUpdate(id, name, description)
+{
+
+  var convertedName = "'"+ name +"'";
+  var convertedDescription ;
+  //changing section1 to edit mode, making form2!!!
+  document.getElementById("section1").innerHTML =
+  `
+    <form class="border p-4 mb-4" id="form2">
+      <div class="form-group">
+          <label>Data name</label>
+          <input type="text" class="form-control" id="data" placeholder="${convertedName}">
+      </div>
+
+      <div class="form-group">
+          <label>Description </label>
+          <input type="text" class="form-control" id="description" placeholder="${convertedDescription}">
+      </div>
+    </form>
+
+    <button onclick="writeUserToDB('users')" class="btn btn-success">Update task</button>
+    <button onclick="read('users')"  class="btn btn-danger">Cancel</button>
   `;
 }
 
