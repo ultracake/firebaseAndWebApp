@@ -35,11 +35,12 @@
                         <label>Description </label>
                         <input type="text" class="form-control" id="description" placeholder="Description">
                     </div>
-                    <button style="display: none" id="but2" class="btn btn-success">Update task</button>
-                    <button style="display: none" id="but3" class="btn btn-danger">Cancel</button>
                 </form>
-                <button type="submit" onclick="writeUserToDB('users')">Add data</button>
-                <button onclick="read('users')">read data</button>
+                <button class="btn btn-success" onclick="writeUserToDB('users')">
+                    <i class="far fa-plus-square"></i>
+                    Add data
+                 </button>
+                <button class="btn btn-warning" onclick="read('users')">read data</button>
                 
             </div>
             <div class="col-md-6" id="cardSection">
@@ -53,8 +54,8 @@
     <div id="login_div">
 
         <h3>min test login</h3>
-        <input type="email" placeholder="Enter email" id="email_input">
-        <input type="password" placeholder="Enter password" id="password_input">
+        <input type="email" placeholder="Enter email" id="email_input" title="email">
+        <input type="password" placeholder="Enter password" id="password_input" title="password">
 
         <button onclick="login()">login to account</button>
         

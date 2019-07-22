@@ -91,7 +91,7 @@ function writeUserToDB(dbName)
 
 function writeDB(collectionName, mylist)
 {
-  firestoreDB.collection(collectionName).doc("test").set(mylist)
+  firestoreDB.collection(collectionName).doc(mylist.data).set(mylist)
   .then(function(docRef) 
   {
     console.log("Document written with ID: ", docRef.id);
@@ -120,6 +120,9 @@ function read(collectionName)
       console.log(`${doc.id} => ${doc.data()}`);
       var ValueFromDB = doc.data(); 
 
+      var valData = "'" + ValueFromDB.data + "'";
+      var valDescription = "'" + ValueFromDB.description + "'";
+
       //used symbol ( ` ), its next to symbol ( ? )
       document.getElementById("cardSection").innerHTML += 
       `<div class="card mb-3">
@@ -127,11 +130,17 @@ function read(collectionName)
           <h5 class="card-text">${ValueFromDB.data}</h5>
           <p>${ValueFromDB.description}</p>
 
-          <button type="submit" style="color:green" class="btn btn-warninig"
-          onclick="myUpdate(${ValueFromDB.id}, ${ValueFromDB.data}, ${ValueFromDB.description})">Edit data</button>
+          <button type="submit" style="color:green" class="btn btn-warning"
+          onclick="myUpdate(${ValueFromDB.id}, ${valData}, ${valDescription})"> 
+            <i class="fas fa-edit"></i>
+            Edit data
+          </button>
 
           <button style="color:black" class="btn btn-danger"
-          onclick="deleteFromDB('users')">Delete</button>
+          onclick="deleteFromDB('users', ${valData})"> 
+            <i class="fas fa-trash-alt"></i> 
+            Delete
+          </button>
 
         </div>
       </div>
@@ -142,9 +151,9 @@ function read(collectionName)
   });
 }
 
-function deleteFromDB(collectionName)
+function deleteFromDB(collectionName, dataName)
 {
-  firestoreDB.collection(collectionName).doc("test").delete().then(function() 
+  firestoreDB.collection(collectionName).doc(dataName).delete().then(function() 
   {
     console.log("Document successfully deleted!");
   }).catch(function(error)
@@ -169,37 +178,35 @@ function reset()
           <label>Description </label>
           <input type="text" class="form-control" id="description" placeholder="Description">
       </div>
-      <button style="display: none" id="but2" class="btn btn-success">Update task</button>
-      <button style="display: none" id="but3" class="btn btn-danger">Cancel</button>
     </form>
 
-    <button onclick="writeUserToDB('users')">Add data</button>
+    <button class="btn btn-success" onclick="writeUserToDB('users')">
+      <i class="far fa-plus-square"></i>
+      Add data
+    </button>
     <button onclick="read('users')">read data</button>
   `;
 }
 
 function myUpdate(id, name, description)
 {
-
-  var convertedName = "'"+ name +"'";
-  var convertedDescription ;
   //changing section1 to edit mode, making form2!!!
   document.getElementById("section1").innerHTML =
   `
     <form class="border p-4 mb-4" id="form2">
       <div class="form-group">
           <label>Data name</label>
-          <input type="text" class="form-control" id="data" placeholder="${convertedName}">
+          <input type="text" class="form-control" id="data" placeholder="${name}">
       </div>
 
       <div class="form-group">
           <label>Description </label>
-          <input type="text" class="form-control" id="description" placeholder="${convertedDescription}">
+          <input type="text" class="form-control" id="description" placeholder="${description}">
       </div>
     </form>
 
-    <button onclick="writeUserToDB('users')" class="btn btn-success">Update task</button>
-    <button onclick="read('users')"  class="btn btn-danger">Cancel</button>
+    <button onclick="writeUserToDB('users')" class="btn btn-success">Update data</button>
+    <button onclick="reset()" class="btn btn-danger">Cancel</button>
   `;
 }
 
