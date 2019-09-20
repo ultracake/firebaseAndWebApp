@@ -13,6 +13,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var firestoreDB = firebase.firestore();
 
+// check if user is loggin or not
 firebase.auth().onAuthStateChanged(function(user) 
 {
     if (user)
@@ -94,7 +95,7 @@ function writeDB(collectionName, mylist)
   firestoreDB.collection(collectionName).doc(mylist.data).set(mylist)
   .then(function(docRef) 
   {
-    console.log("Document written with ID: ", docRef.id);
+    console.log("Document written with ID: ", docRef);
   })
   .catch(function(error) 
   {
@@ -120,6 +121,7 @@ function read(collectionName)
       console.log(`${doc.id} => ${doc.data()}`);
       var ValueFromDB = doc.data(); 
 
+      //formatting for method use
       var valData = "'" + ValueFromDB.data + "'";
       var valDescription = "'" + ValueFromDB.description + "'";
 
@@ -145,8 +147,6 @@ function read(collectionName)
         </div>
       </div>
       `;
-      
-      //if(){}
     });
   });
 }
@@ -208,6 +208,31 @@ function myUpdate(id, name, description)
     <button onclick="writeUserToDB('users')" class="btn btn-success">Update data</button>
     <button onclick="reset()" class="btn btn-danger">Cancel</button>
   `;
+}
+
+function saveStaticDataToFile()
+{
+   var filename = "rexTest";
+   var file = new Blob(["welcome test"], {type: "text/plain;charset=utf-8"});
+   
+   if (window.navigator.msSaveOrOpenBlob) // IE10+
+   {
+      window.navigator.msSaveOrOpenBlob(file, filename);
+   }
+   else // Others
+   {
+      var a = document.createElement("a"), url = URL.createObjectURL(file);
+     
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() 
+      {
+         document.body.removeChild(a);
+         window.URL.revokeObjectURL(url);  
+      }, 0); 
+   }
 }
 
 
